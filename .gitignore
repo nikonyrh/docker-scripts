@@ -3,4 +3,5 @@
 !.gitignore
 !Dockerfile
 !*.sh
+!*.bat
 !*.md
