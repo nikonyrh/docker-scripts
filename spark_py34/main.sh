@@ -9,6 +9,10 @@ if [[ -z "$MASTER_PORT" ]] ; then
     MASTER_PORT=7077
 fi
 
+if [[ -z "$SLAVES_PER_CORE" ]] ; then
+    SLAVES_PER_CORE=1
+fi
+
 export SPARK_LOCAL_IP=$SPARK_PUBLIC_DNS
 
 /usr/spark/sbin/start-slave.sh \
