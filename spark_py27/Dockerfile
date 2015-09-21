@@ -31,6 +31,7 @@ ENV SPARK_WORKER_OPTS="-Dspark.driver.port=7001 -Dspark.fileserver.port=7002 -Ds
 ENV SPARK_WORKER_PORT 8888
 ENV SPARK_WORKER_WEBUI_PORT 8081
 
+# Note: Copy this from ../spark_py34 :(
 COPY main.sh /main.sh
 RUN chmod +x /main.sh
 RUN dos2unix /main.sh
