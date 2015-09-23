@@ -5,3 +5,5 @@
 !*.sh
 !*.bat
 !*.md
+nginx/*
+!*.conf

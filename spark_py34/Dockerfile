@@ -34,8 +34,9 @@ ENV SPARK_WORKER_PORT 8888
 ENV SPARK_WORKER_WEBUI_PORT 8081
 ENV USERNAME docker
 
+RUN ln -s /usr/spark/logs /spark-logs
+
 COPY main.sh /main.sh
-RUN chmod +x /main.sh
-RUN dos2unix /main.sh
+RUN chmod +x /*.sh && dos2unix /*.sh
 
 CMD /bin/bash -c "source /py3/bin/activate && /main.sh && tail -f /dev/null"

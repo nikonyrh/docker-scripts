@@ -9,4 +9,8 @@ if [[ -z "$MASTER_PORT" ]] ; then
     MASTER_PORT=7077
 fi
 
-/usr/spark/sbin/start-slave.sh "spark://$MASTER_IP:$MASTER_PORT" 
+export SPARK_LOCAL_IP=$SPARK_PUBLIC_DNS
+
+/usr/spark/sbin/start-slave.sh \
+    --cores $((`nproc` * $SLAVES_PER_CORE)) \
+    "spark://$MASTER_IP:$MASTER_PORT" 
