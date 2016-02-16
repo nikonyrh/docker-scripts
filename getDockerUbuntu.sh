@@ -28,4 +28,8 @@ if [ "$DOCKER" = "" ]; then
    >&2 echo -e "\n\nDokcer installation failed!\n\n" && exit 1
 fi
 
-usermod -aG docker ubuntu
+getent passwd ubuntu >/dev/null 2>&1
+if [[ $? -eq 0 ]]; then
+    # Add "ubuntu" user to the docker group
+    usermod -aG docker ubuntu
+fi
