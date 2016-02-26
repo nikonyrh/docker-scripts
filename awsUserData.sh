@@ -11,7 +11,7 @@ if [[ "$HOSTNAME" == ip-* ]]; then
 fi
 
 # Install updates
-apt-get update && apt-get install
+apt-get update && apt-get upgrade -y && apt-get install -y htop
 
 # Install docker
 TMP=`mktemp` && \
