@@ -17,4 +17,5 @@ export SPARK_LOCAL_IP=$SPARK_PUBLIC_DNS
 
 /usr/spark/sbin/start-slave.sh \
     --cores $((`nproc` * $SLAVES_PER_CORE)) \
-    "spark://$MASTER_IP:$MASTER_PORT" 
+    "spark://$MASTER_IP:$MASTER_PORT"
+
