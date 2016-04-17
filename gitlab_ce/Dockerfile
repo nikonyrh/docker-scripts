@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 MAINTAINER Niko Nyrh "https://github.com/nikonyrh"
 
 # docker build -t gitlab .
-# docker run -p 81:80 -v "$PWD/etc_gitlab:/etc/gitlab" -v "$PWD/opt_gitlab:/var/opt/gitlab" -it gitlab
+# docker run -m 1gb -p 81:80 -v "$PWD/etc_gitlab:/etc/gitlab" -v "$PWD/opt_gitlab:/var/opt/gitlab" -d gitlab
 
 # Install required packages
 RUN apt-get update -q \
