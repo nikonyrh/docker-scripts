@@ -1,0 +1,6 @@
+PACKAGECLOUD_REPO=gitlab-ce
+RELEASE_PACKAGE=gitlab-ce
+
+# Not sure which versions exists :/
+#RELEASE_VERSION=8.6
+
