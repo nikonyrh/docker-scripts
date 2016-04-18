@@ -20,6 +20,16 @@ while [ $# -gt 0 ]; do
         sed -r -i 's/#auth_/auth_/' /etc/nginx/nginx.conf
         shift && shift
         ;;
+    "-ssl"|"-tls")
+        >&2 echo 'Enabling SSL/TLS with self-signed certificate'
+        openssl req -subj '/CN=nginx_image.nikonyrh.org/O=Nginx Image/C=FI' \
+            -sha256 -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout /data/server.key -out /data/conf/server.crt
+        
+        sed -r -i 's/#listen 443/listen 443/' /etc/nginx/nginx.conf
+        sed -r -i 's/#ssl_/ssl_/'             /etc/nginx/nginx.conf
+        shift
+        ;;
+    
     
     *)
         >&2 echo "Unrecognized command '$1'!" && exit 1
