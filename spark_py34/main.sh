@@ -2,21 +2,32 @@
 source /py3/bin/activate
 
 if [[ ! -z "$2" ]] ; then
-    HOST_IP="$2"
+    IP="$2"
 fi
 
-if [[ -z "$HOST_IP" ]] ; then
-    >&2 echo "No HOST_IP defined!" && exit 1
+if [[ -z "$IP" ]] ; then
+    >&2 echo "No IP defined!" && exit 1
+fi
+
+if [[ -z "$MASTER_PORT" ]] ; then
+    MASTER_PORT=7077
+fi
+
+if [ "$1" == "submit" ]; then
+    shift && shift
+    echo "Running $@"
+    cd /src && $SPARK_HOME/bin/spark-submit --master "spark://$IP:$MASTER_PORT" $@
+    exit 0
 fi
 
 if [[ ! -z "$3" ]] ; then
     SPARK_MASTER_IP="$3"
 else
-    SPARK_MASTER_IP="$HOST_IP"
+    SPARK_MASTER_IP="$IP"
 fi
 
-SPARK_LOCAL_IP="$HOST_IP"
-SPARK_PUBLIC_DNS="$HOST_IP"
+SPARK_LOCAL_IP="$IP"
+SPARK_PUBLIC_DNS="$IP"
 
 export SPARK_MASTER_IP
 export SPARK_LOCAL_IP
@@ -28,11 +39,7 @@ if [ "$1" == "master" ]; then
 fi
 
 if [ "$1" != "slave" ]; then
-    >&2 echo "Unrecognized mode '$1', expecting 'master' or 'slave'!" && exit 1
-fi
-
-if [[ -z "$MASTER_PORT" ]] ; then
-    MASTER_PORT=7077
+    >&2 echo "Unrecognized mode '$1', expecting 'master', 'slave' or 'submit'!" && exit 1
 fi
 
 if [[ -z "$SLAVES_PER_CORE" ]] ; then

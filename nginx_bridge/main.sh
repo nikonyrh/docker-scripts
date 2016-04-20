@@ -31,7 +31,6 @@ while [ $# -gt 0 ]; do
         shift
         ;;
     
-    
     *)
         >&2 echo "Unrecognized command '$1'!" && exit 1
         ;;
