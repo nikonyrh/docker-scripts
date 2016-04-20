@@ -14,7 +14,6 @@ IF "%master%"=="" (
 )
 
 docker run -e SPARK_PUBLIC_DNS=%ip% ^
-    -v /media/analyticsdev:/media/analyticsdev ^
     -e "MASTER_IP=%master%" ^
     -d nikonyrh/spark
 
