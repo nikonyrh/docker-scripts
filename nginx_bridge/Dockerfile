@@ -6,6 +6,7 @@ MAINTAINER Niko Nyrh "https://github.com/nikonyrh"
 # Optional parameters:
 #     -no-logs                           Disable access logs at /conf/logs.txt
 #     --auth user:password               Require basic HTTP authentication (protects against "naive" attackers with just port scanners)
+#     -(ssl|tls)                         Enable self-signed cert generation
 
 
 # apache2-utils:    for htpasswd

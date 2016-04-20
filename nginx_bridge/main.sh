@@ -20,6 +20,7 @@ while [ $# -gt 0 ]; do
         sed -r -i 's/#auth_/auth_/' /etc/nginx/nginx.conf
         shift && shift
         ;;
+    
     "-ssl"|"-tls")
         >&2 echo 'Enabling SSL/TLS with self-signed certificate'
         openssl req -subj '/CN=nginx_image.nikonyrh.org/O=Nginx Image/C=FI' \
