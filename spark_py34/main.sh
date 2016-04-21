@@ -42,12 +42,16 @@ if [ "$1" != "slave" ]; then
     >&2 echo "Unrecognized mode '$1', expecting 'master', 'slave' or 'submit'!" && exit 1
 fi
 
-if [[ -z "$SLAVES_PER_CORE" ]] ; then
-    SLAVES_PER_CORE=1
+if [[ -z "$CORES" ]] ; then
+    if [[ -z "$SLAVES_PER_CORE" ]] ; then
+        SLAVES_PER_CORE=1
+    fi
+    
+    CORES=$((`nproc` * $SLAVES_PER_CORE))
 fi
 
 MASTER_URL="spark://$SPARK_MASTER_IP:$MASTER_PORT"
 
-/usr/spark/sbin/start-slave.sh --cores $((`nproc` * $SLAVES_PER_CORE)) $MASTER_URL && \
+/usr/spark/sbin/start-slave.sh --cores $CORES $MASTER_URL && \
     sleep 2 && tail -f -n200 /spark-logs/*
 
