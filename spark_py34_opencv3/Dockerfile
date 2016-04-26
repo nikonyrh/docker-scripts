@@ -1,9 +1,9 @@
-FROM nikonyrh/spark
+FROM nikonyrh/spark_base
 MAINTAINER Niko Nyrh "https://github.com/nikonyrh"
 
 # Based on https://github.com/janza/docker-python3-opencv/blob/master/Dockerfile
 
-# to build:        docker build -t nikonyrh/spark_ocv spark_py34_opencv3
+# to build:        docker build -t nikonyrh/spark_ocv_base spark_py34_opencv3
 # other commands:  as with nikonyrh/spark_py34
 
 RUN apt-get update && apt-get install -y \

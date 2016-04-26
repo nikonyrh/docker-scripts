@@ -6,12 +6,13 @@ MAINTAINER Niko Nyrh "https://github.com/nikonyrh"
 #     - http://blog.james-carr.org/2013/09/04/parameterized-docker-containers/
 #     - http://sometechshit.blogspot.ru/2015/04/running-spark-standalone-cluster-in.html
 
-# to build:        docker build -t nikonyrh/spark spark_py34
-# to start master: docker run -d --net=host nikonyrh/spark master `./ip.sh`
-# to start slave:  docker run -d --net=host nikonyrh/spark slave  `./ip.sh`
-# to start slave:  docker run -d --net=host nikonyrh/spark slave  `./ip.sh` spark.master.ip
-# to start bash:   docker run -it --net=host -v "$PWD:/src" --entrypoint=bash nikonyrh/spark
+# to build:        docker build -t nikonyrh/spark_base spark_py34
+# to start master: docker run -d --net=host nikonyrh/spark_base master `./ip.sh`
+# to start slave:  docker run -d --net=host nikonyrh/spark_base slave  `./ip.sh`
+# to start slave:  docker run -d --net=host nikonyrh/spark_base slave  `./ip.sh` spark.master.ip
+# to start bash:   docker run -it --net=host -v "$PWD:/src" --entrypoint=bash nikonyrh/spark_base
 # to submit:       ../docker-scripts/spark-submit.sh `../docker-scripts/ip.sh` pi.py 100
+# in container:    $SPARK_HOME/bin/spark-submit --master local[2] main.py
 
 RUN apt-get update && apt-get install -y curl net-tools unzip
 
