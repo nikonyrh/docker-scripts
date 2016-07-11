@@ -53,7 +53,9 @@ term_handler() {
 trap term_handler SIGTERM
 
 mkdir -p /data/logs
-ln -s /etc/nginx/nginx.conf /data/conf
+
+ln -s /etc/nginx/nginx.conf    /data/logs
+ln -s /var/log/nginx/error.log /data/logs
 
 >&2 echo 'Starting nginx'
 nginx -t && nginx -g 'daemon off;' 2>&1 | tee /data/conf/logs.txt &

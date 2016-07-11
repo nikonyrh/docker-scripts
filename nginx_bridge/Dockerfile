@@ -2,7 +2,7 @@ FROM nginx:1.9
 MAINTAINER Niko Nyrh "https://github.com/nikonyrh"
 
 # To build: docker build -t nikonyrh/nginx_bridge nginx_bridge
-# To run:   docker run -p 1234:80 -v "$PWD:/volume" -d nikonyrh/nginx_bridge
+# To run:   docker run -p 1234:80 -v "$PWD:/volume:ro" -d nikonyrh/nginx_bridge
 # Optional parameters:
 #     -no-logs                           Disable access logs at /conf/logs.txt
 #     --auth user:password               Require basic HTTP authentication (protects against "naive" attackers with just port scanners)
