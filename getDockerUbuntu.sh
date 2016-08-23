@@ -12,11 +12,15 @@ if [ "$DOCKER" != "" ]; then
    >&2 echo -e "\n\nDokcer already installed!\n\n" && exit 0
 fi
 
+# The kernel version
 UNAME=`uname -r`
+
+# Has values like ubuntu-trhusty and ubuntu-xenial
+UBUNTU=`lsb_release -c | sed -r 's/.+[ \t]/ubuntu-/'`
 
 # Based on https://docs.docker.com/engine/installation/ubuntulinux/
 apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \
-	echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list && \
+	echo "deb https://apt.dockerproject.org/repo $UBUNTU main" > /etc/apt/sources.list.d/docker.list && \
 	apt-get update && \
 	apt-get install -y "linux-image-extra-$UNAME" && \
 	apt-get install -y docker-engine && \
@@ -30,6 +34,6 @@ fi
 
 getent passwd ubuntu >/dev/null 2>&1
 if [[ $? -eq 0 ]]; then
-    # Add "ubuntu" user to the docker group
+    # Add "ubuntu" user to the docker group, should auto-detect the username
     usermod -aG docker ubuntu
 fi
