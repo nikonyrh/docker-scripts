@@ -1,4 +1,7 @@
 #!/bin/bash
+# Expecting ip.sh to exist in the same folder
+cd "$(dirname "$(readlink -f -- "$0")")"
+
 if [ "$2" == "" ]; then
     >&2 echo "Usage: $0 version memory-gb" && exit 1
 fi
@@ -16,6 +19,10 @@ MODE=d
 while (( "$#" )); do
     case $1 in
         --data)
+            if [ "$2" == "" ]; then
+                >&2 echo "Missing option for $1!" && exit 1
+            fi
+
             sudo mkdir -p $2 && sudo chown "$USER:$USER" $2
             VOLUMES="$VOLUMES -v $2:/usr/share/elasticsearch/data"
             shift 2

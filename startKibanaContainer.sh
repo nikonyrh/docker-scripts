@@ -1,4 +1,7 @@
 #!/bin/bash
+if [ "$1" == "" ]; then
+    >&2 echo "Usage: $0 [elasticsearch-ip]" && exit 1
+fi
 
 if [ "$ELASTICSEARCH_URL" = "" ]; then
     IP=`./ip.sh`
@@ -10,6 +13,7 @@ docker run -p 5601:5601 \
     -d "kibana$1"
 
 # Let's give Kibana some time to create the index...
-sleep 5
+sleep 10
 
-curl -XPUT "http://$ELASTICSEARCH_URL/.kibana/_settings" -d '{"index": {"number_of_replicas": 0}}'
+curl -XPUT "$ELASTICSEARCH_URL/.kibana/_settings" -d '{"index": {"number_of_replicas": 0}}'
+
