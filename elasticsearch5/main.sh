@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ "$LOCAL_IP" == "" ]; then
-    >&2 echo "Error: LOCAL_IP env variable not set!" exit 1
+    >&2 echo "Error: LOCAL_IP env variable not set!" && exit 1
 fi
 
 CORS=`echo $LOCAL_IP | sed -r "s/\./\\\\./"`
@@ -11,8 +11,8 @@ echo "Generated CORS for $LOCAL_IP: $CORS"
 echo 'http.cors.enabled:      true'  >> config/elasticsearch.yml
 echo "http.cors.allow-origin: $CORS" >> config/elasticsearch.yml
 
-WORKDIR=$PWD
+sed -r -i "s/0.0.0.0/$LOCAL_IP/" config/elasticsearch.yml
 
 cd /elasticsearch-head-master && grunt server &
-cd $WOKDIR && /docker-entrypoint.sh elasticsearch
+/docker-entrypoint.sh elasticsearch
 

@@ -2,12 +2,12 @@
 # Expecting ip.sh to exist in the same folder
 cd "$(dirname "$(readlink -f -- "$0")")"
 
+# To fix max map count: sysctl -w vm.max_map_count=262144
+
 if [ "$2" == "" ]; then
     >&2 echo "Usage: $0 version memory-gb" && exit 1
 fi
 
-cd "$(dirname "$(realpath "$0")")";
-# To fix max map count: sysctl -w vm.max_map_count=262144
 
 VER=$1
 MEM="${2}g"
