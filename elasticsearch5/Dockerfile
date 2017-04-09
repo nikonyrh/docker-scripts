@@ -97,5 +97,7 @@ RUN cd / && \
 COPY main.sh /main.sh
 RUN chmod +x /*.sh
 
+COPY jmx.conf /jmx.conf
+
 ENTRYPOINT ["/main.sh"]
 

@@ -15,6 +15,7 @@ shift 2
 
 VOLUMES=
 MODE=d
+ES_JAVA_OPTS="-Xms$MEM -Xmx$MEM"
 
 while (( "$#" )); do
     case $1 in
@@ -33,6 +34,12 @@ while (( "$#" )); do
             shift
             ;;
         
+        -jmx)
+            # http://stackoverflow.com/a/35108974
+            ES_JVM_OPTIONS=/jmx.conf
+            shift
+            ;;
+        
         *)
             >&2 echo "Unknown option $1!" && exit 1
             ;;
@@ -40,7 +47,8 @@ while (( "$#" )); do
 done
 
 docker run --net host \
-    -e ES_JAVA_OPTS="-Xms$MEM -Xmx$MEM" \
+    -e ES_JAVA_OPTS="$ES_JAVA_OPTS" \
+    -e ES_JVM_OPTIONS="$ES_JVM_OPTIONS" \
     -e LOCAL_IP=`./ip.sh` \
     -$MODE $VOLUMES \
     "elasticsearch$VER"
