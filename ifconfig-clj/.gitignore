@@ -3,7 +3,7 @@
 !*.md
 !*.sh
 !*.clj
-!*.yaml
+!*.yml
 !.*ignore
 !Dockerfile
 target/*

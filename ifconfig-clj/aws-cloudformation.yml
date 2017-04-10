@@ -1,4 +1,7 @@
-# aws cloudformation create-stack --capabilities CAPABILITY_IAM --stack-name ifconfig-clj --template-body "file://$PWD/aws-cloudformation.yaml"
+# lein uberjar
+# aws s3 cp target/org.clojars.nikonyrh.ifconfig-clj-0.1.0-standalone.jar s3://nikonyrh-lambdas
+# aws cloudformation create-stack --capabilities CAPABILITY_IAM --stack-name ifconfig-clj --template-body "file://$PWD/aws-cloudformation.yml"
+
 AWSTemplateFormatVersion: "2010-09-09"
 Resources:
   RootRole:
@@ -35,6 +38,6 @@ Resources:
       Role: !GetAtt RootRole.Arn
       Code:
         S3Bucket: nikonyrh-lambdas
-        S3Key: ifconfig-clj-0.0.1-SNAPSHOT-standalone.jar
+        S3Key: ifconfig-clj-0.1.0-standalone.jar
       Runtime: java8
 

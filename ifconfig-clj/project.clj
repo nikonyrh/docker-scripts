@@ -1,5 +1,5 @@
-(defproject ifconfig-clj "0.0.1-SNAPSHOT"
-  :description "FIXME: write description"
+(defproject org.clojars.nikonyrh.ifconfig-clj "0.1.0"
+  :description "A simple demonstration on how to expose Clojure to other systems via HTTP"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/data.json "0.2.6"]
                  [ring/ring-core "1.5.1"]
