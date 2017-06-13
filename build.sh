@@ -9,5 +9,5 @@ while (( "$#" )); do
 	IMG=`echo $1 | sed -r 's_[/ ]__'`
 	docker build -t $IMG $IMG
 	shift
-fi
+done
 
