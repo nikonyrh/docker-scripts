@@ -16,6 +16,7 @@ shift 2
 VOLUMES=
 MODE=d
 ES_JAVA_OPTS="-Xms$MEM -Xmx$MEM"
+RESTART=
 
 while (( "$#" )); do
     case $1 in
@@ -34,6 +35,11 @@ while (( "$#" )); do
             shift
             ;;
         
+        -restart)
+            RESTART="--restart unless-stopped"
+            shift
+            ;;
+        
         -jmx)
             # http://stackoverflow.com/a/35108974
             ES_JVM_OPTIONS=/jmx.conf
@@ -47,6 +53,7 @@ while (( "$#" )); do
 done
 
 docker run --net host \
+    $RESTART \
     -e ES_JAVA_OPTS="$ES_JAVA_OPTS" \
     -e ES_JVM_OPTIONS="$ES_JVM_OPTIONS" \
     -e LOCAL_IP=`./ip.sh` \
