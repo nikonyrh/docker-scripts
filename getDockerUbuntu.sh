@@ -31,7 +31,7 @@ apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E8
 	apt-get update && \
 	$KERNEL_IMAGE_EXTRA && \
 	apt-get install -y docker-engine && \
-	echo "Install ok, setting user group" && \
+	sleep 5 && \
 	service docker start 2>/dev/null
 
 DOCKER=`which docker`
@@ -39,8 +39,12 @@ if [ "$DOCKER" = "" ]; then
    >&2 echo -e "\n\nDokcer installation failed!\n\n" && exit 1
 fi
 
+# TODO: Auto-detect the correct user name
 getent passwd ubuntu >/dev/null 2>&1
+
 if [[ $? -eq 0 ]]; then
-    # Add "ubuntu" user to the docker group
+    echo "Install ok, adding ubuntu to docker group"
     usermod -aG docker ubuntu
+else
+    echo "Install ok but user 'ubuntu' does not exist, not adding to docker group"
 fi
