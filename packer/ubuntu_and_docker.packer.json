@@ -1,0 +1,49 @@
+{
+  "variables": {
+    "AWS_ACCESS_KEY_ID": "",
+    "AWS_SECRET_ACCESS_KEY": "",
+    
+    "BASE_AMI": "",
+    "REGION": ""
+  },
+  "provisioners": [{
+    "type": "shell",
+    "pause_before": "30s",
+    "inline": [
+      "# Ref. https://askubuntu.com/a/190332/430574",
+      "export DEBIAN_FRONTEND=noninteractive",
+      
+      "sudo -E apt-get -q update && sudo -E apt-get -q upgrade -y",
+      "sudo -E apt-get install -yq htop jq tcpflow iftop cifs-utils python-pip",
+      "sudo pip install --upgrade pip",
+      "sudo pip install --upgrade awscli"
+    ]
+  }, {
+    "type": "shell",
+    "pause_before": "10s",
+    "script": "installDockerUbuntu.sh",
+    "override": {
+      "amazon-ebs": {
+        "execute_command": "sudo bash {{.Path}}"
+      }
+    }
+  }],
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key":   "{{user `AWS_ACCESS_KEY_ID`}}",
+    "secret_key":   "{{user `AWS_SECRET_ACCESS_KEY`}}",
+    "source_ami":   "{{user `BASE_AMI`}}",
+    "region":       "{{user `REGION`}}",
+    
+    "ami_name": "nikonyrh-ubuntu-{{isotime \"20060102-150405\"}}",
+    
+    "instance_type": "t2.small",
+    "ssh_username": "ubuntu",
+    "associate_public_ip_address": true,
+    "ami_block_device_mappings": [{
+        "delete_on_termination": true,
+        "device_name": "/dev/sda1",
+        "volume_size": 16
+    }]
+  }]
+}

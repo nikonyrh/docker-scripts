@@ -9,3 +9,4 @@ nginx/*
 !*.conf
 !*.yml
 !*.sql
+!*.json

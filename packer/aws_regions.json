@@ -1,0 +1,7 @@
+{
+    "Regions": {
+        "eu-west-1": {
+            "UbuntuAmi": "ami-a8d2d7ce"
+        }
+    }
+}
