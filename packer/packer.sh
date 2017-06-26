@@ -15,15 +15,18 @@ fi
 
 if [ `uname -s` != 'Linux' ]; then
     # Assuming MINGW, sorry OSX!
+    OS=windows
     PACKER=packer.exe
 else
-    # TODO: Confirm this works on Linux, add install steps
-    PACKER=packer
+    OS=linux
+    PACKER=./packer
 fi
 
-if [ `uname -s` != 'Linux' ] && [ ! -f $PACKER ]; then
-    >&2 echo "Note: Downloading packer.exe from releases.hashicorp.com"
-    curl https://releases.hashicorp.com/packer/1.0.2/packer_1.0.2_windows_amd64.zip > packer.zip && \
+if [ ! -f $PACKER ]; then
+    VER=1.0.2
+    >&2 echo "Note: Downloading $PACKER version $VER from releases.hashicorp.com for $OS"
+    
+    curl "https://releases.hashicorp.com/packer/$VER/packer_${VER}_${OS}_amd64.zip" > packer.zip && \
         unzip packer.zip && rm packer.zip
 fi
 
@@ -39,7 +42,7 @@ while (( "$#" )); do
     
     BASE_AMI=`echo "$AWS_CFG" | jq -r .UbuntuAmi`
     
-    ./packer.exe build \
+    $PACKER build \
         -var "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" \
         -var "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" \
         -var "BASE_AMI=$BASE_AMI" \

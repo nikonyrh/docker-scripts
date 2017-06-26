@@ -5,10 +5,12 @@ cd "$(dirname "$(readlink -f -- "$0")")"
 #   ./startSparkContainer.sh master
 #   ./startSparkContainer.sh slave 10.0.2.4
 
-IP=`./ip.sh`
-
 if [ "$IP" = "" ]; then
-    >&2 echo "Host IP not found, wrong default prefix at ip.sh?" && exit 1
+    IP=`./ip.sh`
+    
+    if [ "$IP" = "" ]; then
+        >&2 echo "Host IP not found, wrong default prefix at ip.sh?" && exit 1
+    fi
 fi
 
 MODE="$1"
