@@ -6,21 +6,13 @@
 # Server, bootstrap new cluster:  ./startConsulContainer.sh -server --bootstrap 3 -ui
 # Registrator, --net=host:        ./startConsulContainer.sh -registrator
 
-# To load on a new build machine (if you don't want to build them yourself):
-#   docker pull progrium/consul        && docker tag progrium/consul        consul      && docker rmi progrium/consul
-#   docker pull gliderlabs/registrator && docker tag gliderlabs/registrator registrator && docker rmi gliderlabs/registrator
-
-# Useful links:
-#   - https://hub.docker.com/r/progrium/consul/
-#   - https://github.com/gliderlabs/registrator
-
 if [ "$1" == "" ]; then
     >&2 echo "Usage: $0 --join 192.168.1.2 --host dev-machine-1" && \
         >&2 echo "Usage: $0 -registrator"  && exit 1
 fi
 
 if [ "$1" == "-registrator" ]; then
-    docker run -d --net=host -v /var/run/docker.sock:/tmp/docker.sock registrator consul://localhost:8500
+    docker run -d --net=host -v /var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator consul://localhost:8500
     exit $?
 fi
 
@@ -51,7 +43,7 @@ while (( "$#" )); do
             ;;
         
         -ui)
-            PARAMS="$PARAMS -ui-dir /ui"
+            PARAMS="/ui"
             shift
             ;;
         
@@ -68,4 +60,5 @@ while (( "$#" )); do
 done
 
 # SERVICE_IGNORE=1 is for Registrator to ignore this Consul instance
-docker run --restart=on-failure:1 -e SERVICE_IGNORE=1 -d $NET consul $MODE -advertise `./ip.sh` $PARAMS
+docker run --restart=on-failure -e SERVICE_IGNORE=1 -d $NET \
+    consul:0.8.5 agent $MODE -client 0.0.0.0 -advertise `./ip.sh` $PARAMS
