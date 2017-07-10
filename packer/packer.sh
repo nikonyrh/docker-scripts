@@ -49,3 +49,4 @@ while (( "$#" )); do
         -var "REGION=$REGION" \
         ubuntu_and_docker.packer.json
 done
+

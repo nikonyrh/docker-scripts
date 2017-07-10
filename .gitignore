@@ -10,3 +10,4 @@ nginx/*
 !*.yml
 !*.sql
 !*.json
+!*.py
