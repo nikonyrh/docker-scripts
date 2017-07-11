@@ -11,3 +11,4 @@ nginx/*
 !*.sql
 !*.json
 !*.py
+!*.properties

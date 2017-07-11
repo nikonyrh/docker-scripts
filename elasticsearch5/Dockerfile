@@ -95,6 +95,7 @@ RUN cd / && \
     npm install
 
 COPY main.sh /main.sh
+COPY log4j2.properties /usr/share/elasticsearch/config/log4j2.properties
 RUN chmod +x /*.sh
 
 COPY jmx.conf /jmx.conf
