@@ -10,8 +10,10 @@ import elasticsearch.exceptions
 # ES 5.x
 types = {
     'int':           {'type': 'integer'},
+    'int_NI':        {'type': 'integer', 'index': False},
     'long':          {'type': 'long'},
     'float':         {'type': 'float'},
+    'float_NI':      {'type': 'float', 'index': False},
     'keyword':       {'type': 'keyword'},
     'text':          {'type': 'text'},
     'date_yyyyddmm': {'type': 'date',   'format': 'YYYY-MM-dd'},
@@ -38,7 +40,7 @@ class EsClient:
     def __init__(self, server):
         self.client = Elasticsearch(server)
         self.indices_client = IndicesClient(self.client)
-        self.existing_indexes = {}
+        self.existing_indexes = set()
     
     def delete_index(self, index):
         try:
@@ -53,7 +55,7 @@ class EsClient:
         
         try:
             if self.indices_client.exists(index):
-                self.existing_indexes[index] = True
+                self.existing_indexes.add(index)
                 return True
         except elasticsearch.exceptions.ConnectionError:
             return False
@@ -160,7 +162,11 @@ class EsClient:
     def exists(self, index, type, id):
         raise NotImplementedError
     
-    def upload_documents(self, index, type, docs_iterable, chunk_size=5000, id_field=None, id_from_json=False, mapping=None):
+    def upload_documents(
+        self, index, type, docs_iterable,
+        chunk_size=5000, id_field=None, index_field=None,
+        id_from_json=False
+    ):
         status = []
         
         fixed_index = isinstance(index, str)
@@ -173,10 +179,16 @@ class EsClient:
             data = []
             
             for doc in doc_chunk:
-                meta = {
-                    '_index': index if fixed_index else index(doc),
-                    '_type':  type
-                }
+                doc = copy.deepcopy(doc)
+                meta = {'_type':  type}
+                
+                if fixed_index:
+                    meta['_index'] = index
+                if index_field:
+                    meta['_index'] = doc[index_field]
+                    del doc[index_field]
+                else:
+                    meta['_index'] = index(doc)
                 
                 if not fixed_index:
                     indexes.add(meta['_index'])
@@ -185,7 +197,6 @@ class EsClient:
                     meta['_id'] = (
                         '%d' % int(doc[id_field]) if isinstance(doc[id_field], int) else doc[id_field]
                     )
-                    doc = copy.deepcopy(doc)
                     del doc[id_field]
                     js = json.dumps(doc)
                 else:
