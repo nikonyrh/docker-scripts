@@ -59,8 +59,6 @@ RUN set -ex \
 		chown -R elasticsearch:elasticsearch "$path"; \
 	done
 
-COPY config ./config
-COPY docker-entrypoint.sh /
 
 # Grab gosu for easy step-down from root. Running this later than in the original script,
 # as github.com's cert was not trusted but this was fixed by installing ca-certificates.
@@ -94,8 +92,10 @@ RUN cd / && \
     cd /elasticsearch-head-master && \
     npm install
 
+COPY config ./config
+COPY docker-entrypoint.sh /
+
 COPY main.sh /main.sh
-COPY log4j2.properties /usr/share/elasticsearch/config/log4j2.properties
 RUN chmod +x /*.sh
 
 COPY jmx.conf /jmx.conf
