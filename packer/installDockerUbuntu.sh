@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # An one-liner:
-# curl -s https://raw.githubusercontent.com/nikonyrh/docker-scripts/master/packer/getDockerUbuntu.sh > tmp.sh && sudo bash tmp.sh
+# curl -s https://raw.githubusercontent.com/nikonyrh/docker-scripts/master/packer/installDockerUbuntu.sh > tmp.sh && sudo bash tmp.sh
 
 DOCKER=`which docker`
 if [ "$DOCKER" != "" ]; then
