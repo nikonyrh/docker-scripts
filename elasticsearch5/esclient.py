@@ -184,7 +184,7 @@ class EsClient:
                 
                 if fixed_index:
                     meta['_index'] = index
-                if index_field:
+                elif index_field:
                     meta['_index'] = doc[index_field]
                     del doc[index_field]
                 else:
