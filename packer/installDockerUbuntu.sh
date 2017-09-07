@@ -27,16 +27,14 @@ else
     KERNEL_IMAGE_EXTRA='echo "Skipping installing linux-image-extra, should not be needed as aufsz is already supported"'
 fi
 
-# $UBUNTU has values like ubuntu-trhusty and ubuntu-xenial
-UBUNTU=`lsb_release -c | sed -r 's/.+[ \t]/ubuntu-/'`
-
-# Based on https://docs.docker.com/engine/installation/ubuntulinux/
-apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \
-	echo "deb https://apt.dockerproject.org/repo $UBUNTU main" > /etc/apt/sources.list.d/docker.list && \
+add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable" && \
 	apt-get update -q && \
 	$KERNEL_IMAGE_EXTRA && \
-	apt-get install -yq docker-engine && \
-	sleep 5 && \
+	apt-get install -y docker-ce && \
+	echo "Install ok, setting user group" && \
 	service docker start 2>/dev/null
 
 DOCKER=`which docker`
@@ -44,12 +42,11 @@ if [ "$DOCKER" = "" ]; then
    >&2 echo -e "\n\nDokcer installation failed!\n\n" && exit 1
 fi
 
-# TODO: Auto-detect the correct user name
-getent passwd ubuntu >/dev/null 2>&1
+USER=`ls /home | head -n1`
 
-if [[ $? -eq 0 ]]; then
-    echo "Install ok, adding ubuntu to docker group"
-    usermod -aG docker ubuntu
+if usermod -aG docker $USER; then
+	echo "Done! Pleas sign in and out for usermod to take effect."
 else
-    echo "Install ok but user 'ubuntu' does not exist, not adding to docker group"
+	>&2 echo "Failure with 'usermod -aG docker $USER' :("
+	exit 1
 fi
