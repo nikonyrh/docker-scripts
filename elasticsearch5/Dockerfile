@@ -33,11 +33,11 @@ RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends ca-certificates apt-transport-https && rm -rf /var/lib/apt/lists/* \
 	&& echo 'deb https://artifacts.elastic.co/packages/5.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
 
-ENV ELASTICSEARCH_VERSION 5.2.2
-ENV ELASTICSEARCH_DEB_VERSION 5.2.2
+ENV ELASTICSEARCH_VERSION 5.6.10
+ENV ELASTICSEARCH_DEB_VERSION 5.6.10
 
 # https://github.com/elastic/elasticsearch/issues/21877#issuecomment-270732840
-ENV ES_SKIP_SET_KERNEL_PARAMETERS true
+#ENV ES_SKIP_SET_KERNEL_PARAMETERS true
 
 RUN set -x \
 	\
